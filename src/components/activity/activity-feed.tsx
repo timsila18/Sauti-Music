@@ -1,0 +1,6 @@
+import Link from "next/link";
+import { CircleDollarSign, Disc3, Radio, UsersRound } from "lucide-react";
+import type { ActivityEventRow } from "@/lib/supabase/database.types";
+import { relativeTime } from "@/lib/time";
+const icons={play:Radio,earning:CircleDollarSign,participant:UsersRound,request:Disc3};
+export function ActivityFeed({events,empty="Nothing important to show yet."}:{events:ActivityEventRow[];empty?:string}){return <div className="mt-7 grid gap-3">{events.map(event=>{const Icon=icons[Object.keys(icons).find(k=>event.event_type.startsWith(k)) as keyof typeof icons]??Radio;const content=<div className="flex gap-4 rounded-2xl bg-card p-5"><span className="grid size-11 shrink-0 place-items-center rounded-full bg-lavender text-plum"><Icon className="size-5"/></span><div className="min-w-0"><p className="font-medium">{event.title}</p>{event.body?<p className="mt-1 text-sm text-muted-foreground">{event.body}</p>:null}<time title={new Date(event.created_at).toLocaleString()} className="mt-2 block text-xs text-muted-foreground">{relativeTime(event.created_at)}</time></div></div>;return event.action_url?<Link key={event.id} href={event.action_url}>{content}</Link>:<div key={event.id}>{content}</div>})}{!events.length?<p className="rounded-3xl border border-dashed p-8 text-center text-muted-foreground">{empty}</p>:null}</div>}

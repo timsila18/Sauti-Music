@@ -1,0 +1,3 @@
+import { Music } from "lucide-react";
+import { Button } from "@/components/ui/button";
+export function EmptyState({ title="Nothing here yet", description="Your next Sauti moment will show up here." }: { title?:string; description?:string }) { return <div className="grid min-h-56 place-items-center rounded-3xl border border-dashed p-8 text-center"><div><span className="mx-auto grid size-12 place-items-center rounded-full bg-lavender text-plum"><Music /></span><h3 className="mt-4 font-medium">{title}</h3><p className="mt-1 text-sm text-muted-foreground">{description}</p><Button variant="outline" className="mt-5 rounded-full">Explore music</Button></div></div>; }

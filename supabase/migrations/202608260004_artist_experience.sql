@@ -1,0 +1,13 @@
+begin;
+alter table public.songs add column external_links jsonb not null default '{}'::jsonb check(jsonb_typeof(external_links)='object');
+create table public.outbound_link_events(id bigint generated always as identity primary key,profile_id uuid references public.profiles(id) on delete set null,song_id uuid not null references public.songs(id) on delete cascade,platform text not null,destination_host text not null,created_at timestamptz not null default now());
+alter table public.outbound_link_events enable row level security;
+create policy outbound_insert on public.outbound_link_events for insert to authenticated with check(profile_id=public.current_profile_id());
+create policy outbound_owner_read on public.outbound_link_events for select to authenticated using(exists(select 1 from public.songs s where s.id=song_id and public.can_manage_artist(s.artist_account_id)) or public.is_admin());
+grant insert,select on public.outbound_link_events to authenticated;
+insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types) values('campaign-audio','campaign-audio',false,31457280,array['audio/mpeg','audio/wav','audio/x-wav','audio/mp4','audio/x-m4a']),('song-artwork','song-artwork',true,8388608,array['image/jpeg','image/png','image/webp']) on conflict(id) do update set public=excluded.public,file_size_limit=excluded.file_size_limit,allowed_mime_types=excluded.allowed_mime_types;
+create policy artist_audio_owner_insert on storage.objects for insert to authenticated with check(bucket_id='campaign-audio' and (storage.foldername(name))[1]=public.current_profile_id()::text);
+create policy artist_audio_owner_read on storage.objects for select to authenticated using(bucket_id='campaign-audio' and (storage.foldername(name))[1]=public.current_profile_id()::text);
+create policy artist_artwork_owner_insert on storage.objects for insert to authenticated with check(bucket_id='song-artwork' and (storage.foldername(name))[1]=public.current_profile_id()::text);
+create policy artist_artwork_public_read on storage.objects for select to anon,authenticated using(bucket_id='song-artwork');
+commit;

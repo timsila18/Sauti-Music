@@ -1,0 +1,3 @@
+export type CampaignPricing={minimumBudget:number;commissionRate:number;payoutFeeRate:number;taxRate:number;currency:"KES"};
+export const defaultCampaignPricing:CampaignPricing={minimumBudget:5000,commissionRate:.2,payoutFeeRate:0,taxRate:0,currency:"KES"};
+export function campaignBreakdown(budget:number,p=defaultCampaignPricing){const platformFee=Math.round(budget*p.commissionRate*100)/100;const payoutFees=Math.round(budget*p.payoutFeeRate*100)/100;const taxes=Math.round(budget*p.taxRate*100)/100;return {budget,platformFee,payoutFees,taxes,participantAllocation:budget-platformFee-payoutFees-taxes};}

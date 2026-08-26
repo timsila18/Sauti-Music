@@ -1,0 +1,6 @@
+import "server-only";
+import {notFound} from "next/navigation";
+import {requireRole} from "@/lib/auth/session";
+import {createClient} from "@/lib/supabase/server";
+export async function artistContext(){const {profile}=await requireRole("ARTIST_LABEL","/artist");const db=await createClient();const {data:membership}=await db.from("artist_account_memberships").select("artist_account_id").eq("profile_id",profile.id).limit(1).maybeSingle();if(!membership)notFound();const [{data:account},{data:songs},{data:campaigns},{data:notifications}]=await Promise.all([db.from("artist_accounts").select("*").eq("id",membership.artist_account_id).single(),db.from("songs").select("*").eq("artist_account_id",membership.artist_account_id).order("created_at",{ascending:false}).limit(30),db.from("campaigns").select("*").eq("artist_account_id",membership.artist_account_id).order("created_at",{ascending:false}).limit(30),db.from("notifications").select("*").eq("recipient_profile_id",profile.id).order("created_at",{ascending:false}).limit(8)]);return {profile,account:account!,songs:songs??[],campaigns:campaigns??[],notifications:notifications??[],db};}
+export const campaignStats={spent:192.5,plays:5,djs:1,matatus:1,saves:327};

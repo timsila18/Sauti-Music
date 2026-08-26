@@ -1,0 +1,1 @@
+import{Plays}from"@/components/matatu/matatu-ui";import{matatuContext}from"@/lib/services/matatu-data";export const dynamic="force-dynamic";export default async function Page(){const x=await matatuContext();return <Plays plays={x.plays}/>}

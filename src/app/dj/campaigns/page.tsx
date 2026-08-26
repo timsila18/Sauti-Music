@@ -1,0 +1,1 @@
+import{Campaigns,DjShell}from"@/components/dj/dj-ui";import{djContext}from"@/lib/services/dj-data";export const dynamic="force-dynamic";export default async function Page(){const x=await djContext();return <DjShell><h1 className="text-4xl font-medium">Find campaigns. Play new music.</h1><Campaigns campaigns={x.campaigns}/></DjShell>}

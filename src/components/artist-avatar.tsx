@@ -1,0 +1,2 @@
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+export function ArtistAvatar({ name, subtitle }: { name: string; subtitle?: string }) { return <div className="flex items-center gap-3"><Avatar className="size-12 border-2 border-card shadow"><AvatarFallback className="bg-lavender font-semibold text-plum">{name.split(" ").map(part=>part[0]).join("").slice(0,2)}</AvatarFallback></Avatar><div><p className="font-medium">{name}</p>{subtitle ? <p className="text-sm text-muted-foreground">{subtitle}</p> : null}</div></div>; }

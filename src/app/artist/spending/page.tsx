@@ -1,0 +1,1 @@
+import {Spending} from "@/components/artist/artist-ui";import {artistContext} from "@/lib/services/artist-data";import{artistFinances}from"@/lib/services/finance-data";export const dynamic="force-dynamic";export default async function Page(){const{account}=await artistContext();const finance=await artistFinances(account.id);return <Spending finance={finance}/>}

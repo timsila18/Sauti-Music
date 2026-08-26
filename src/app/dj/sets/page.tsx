@@ -1,0 +1,1 @@
+import{Sets}from"@/components/dj/dj-ui";import{djContext}from"@/lib/services/dj-data";export const dynamic="force-dynamic";export default async function Page(){const x=await djContext();return <Sets sets={x.sets}/>}

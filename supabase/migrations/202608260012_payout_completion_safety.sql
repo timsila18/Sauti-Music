@@ -1,0 +1,17 @@
+begin;
+
+create or replace function public.admin_update_payout(p_payout_id uuid,p_status public.payout_status,p_reason text) returns void language plpgsql security definer set search_path='' as $$
+declare actor uuid;pr public.payout_requests;owner_profile uuid;owner_status public.account_status;available numeric;risk_count integer;participant_source uuid;
+begin
+ if not public.is_admin() then raise exception 'Admin access required';end if;select public.current_profile_id() into actor;
+ select * into pr from public.payout_requests where id=p_payout_id for update;if pr.id is null or pr.status not in('REQUESTED','PROCESSING') then raise exception 'Payout is not actionable';end if;
+ if p_status not in('PROCESSING','COMPLETED','FAILED','CANCELLED') then raise exception 'Invalid payout transition';end if;if p_status='COMPLETED' and pr.status<>'PROCESSING' then raise exception 'Payout must be processing before completion';end if;
+ perform 1 from public.wallets where id=pr.wallet_id for update;select w.profile_id,p.account_status,s.available into owner_profile,owner_status,available from public.wallets w join public.profiles p on p.id=w.profile_id join public.wallet_financial_summary s on s.wallet_id=w.id where w.id=pr.wallet_id;
+ if p_status in('PROCESSING','COMPLETED') then if owner_status<>'ACTIVE' then raise exception 'Participant account is not active';end if;if available<pr.amount then raise exception 'Payout exceeds settled available balance';end if;select coalesce(d.id,m.matatu_id) into participant_source from public.profiles p left join public.dj_profiles d on d.profile_id=p.id left join public.matatu_crew_memberships m on m.profile_id=p.id where p.id=owner_profile limit 1;select count(*) into risk_count from public.play_event_flags f join public.play_events e on e.id=f.play_event_id where f.status='OPEN' and e.source_id=participant_source;if risk_count>0 then raise exception 'Open suspicious activity flags require review';end if;end if;
+ if p_status='COMPLETED' then insert into public.ledger_transactions(wallet_id,transaction_type,direction,amount,currency,reference_type,reference_id,description,status,idempotency_key,posted_at,created_by,metadata) values(pr.wallet_id,'PAYOUT','DEBIT',pr.amount,pr.currency,'payout_request',pr.id,'Development payout completed','POSTED','payout-completed:'||pr.id,now(),actor,'{"development_mock":true}') on conflict(idempotency_key) do nothing;end if;
+ update public.payout_requests set status=p_status,processed_at=case when p_status in('COMPLETED','FAILED','CANCELLED') then now() else processed_at end,failure_reason=case when p_status='FAILED' then p_reason end,metadata=metadata||jsonb_build_object('development_mock',true,'updated_by',actor) where id=pr.id;
+ insert into public.audit_logs(actor_profile_id,action,entity_type,entity_id,previous_data,new_data,metadata) values(actor,'PAYOUT_'||p_status,'payout_request',pr.id,jsonb_build_object('status',pr.status,'available',available),jsonb_build_object('status',p_status),jsonb_build_object('reason',p_reason,'development_mock',true,'risk_flags_checked',risk_count));
+ insert into public.notifications(recipient_profile_id,notification_type,title,body,metadata,link_url) values(pr.requested_by,'PAYOUT_UPDATE','Payout status updated','Your payout request is now '||lower(p_status::text)||'.',jsonb_build_object('payout_id',pr.id,'status',p_status),case when exists(select 1 from public.profiles where id=pr.requested_by and role='DJ') then '/dj/wallet' else '/matatu/wallet' end);
+end$$;
+
+commit;

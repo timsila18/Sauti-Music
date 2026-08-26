@@ -1,0 +1,1 @@
+import{Earnings}from"@/components/matatu/matatu-ui";import{matatuContext}from"@/lib/services/matatu-data";export const dynamic="force-dynamic";export default async function Page(){await matatuContext();return <Earnings/>}

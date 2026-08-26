@@ -1,0 +1,1 @@
+import{CampaignCards,MatatuShell}from"@/components/matatu/matatu-ui";import{matatuContext}from"@/lib/services/matatu-data";export const dynamic="force-dynamic";export default async function Page(){const x=await matatuContext();return <MatatuShell><h1 className="text-4xl font-medium text-plum">Play & Earn</h1><CampaignCards campaigns={x.campaigns}/></MatatuShell>}

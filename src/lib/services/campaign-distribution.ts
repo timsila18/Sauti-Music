@@ -1,0 +1,3 @@
+export type DistributionTarget={participantTypes:("DJ"|"MATATU")[];county?:string;areas?:string[];routes?:string[];participantIds?:string[]};
+export interface CampaignDistributionService{findEligible(target:DistributionTarget):Promise<{type:"DJ"|"MATATU";id:string}[]>;}
+export class SeededCampaignDistribution implements CampaignDistributionService{async findEligible(target:DistributionTarget){const all=[{type:"DJ" as const,id:"40000000-0000-0000-0000-000000000001"},{type:"MATATU" as const,id:"50000000-0000-0000-0000-000000000001"}];return all.filter(x=>target.participantTypes.includes(x.type)&&(!target.participantIds?.length||target.participantIds.includes(x.id)));}}

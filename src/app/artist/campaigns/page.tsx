@@ -1,0 +1,1 @@
+import {CampaignList} from "@/components/artist/artist-ui";import {artistContext} from "@/lib/services/artist-data";export const dynamic="force-dynamic";export default async function Page(){const x=await artistContext();return <CampaignList campaigns={x.campaigns} songs={x.songs}/>}
