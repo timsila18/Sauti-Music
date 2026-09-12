@@ -526,6 +526,10 @@ export type Database = {
       mark_all_notifications_read: { Args: Record<string, never>; Returns: number };
       archive_notification: { Args: { p_notification_id: string }; Returns: undefined };
       set_notification_preference: { Args: { p_category: NotificationCategory; p_enabled: boolean }; Returns: undefined };
+      request_payout: {
+        Args: { p_amount: number; p_method: "MPESA_B2C" | "BANK" | "OTHER"; p_destination_reference: string; p_idempotency_key: string };
+        Returns: string;
+      };
     };
     Enums: {
       user_role: UserRole;
@@ -689,6 +693,12 @@ export type PlayEventRow = {
   qualification_status: QualificationStatus;
   qualified_at: string | null;
   metadata: Json;
+  activity_id: string | null;
+  idempotency_key: string | null;
+  rule_snapshot: Json;
+  reward_amount: string | null;
+  reward_status: "PENDING" | "POSTED" | "FAILED" | "REVERSED" | "CANCELLED" | null;
+  risk_level: "LOW" | "MEDIUM" | "HIGH" | "BLOCKED";
   created_at: string;
 };
 export type WalletRow = {

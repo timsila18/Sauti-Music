@@ -34,7 +34,9 @@ Refundable balance is derived as funding less participant earnings, reserved/non
 
 `payout_requests` stores wallet, exact amount, currency, method, private destination reference, status, timestamps, external reference, failure reason, metadata, and idempotency key. States are `REQUESTED`, `PROCESSING`, `COMPLETED`, `FAILED`, `CANCELLED`, and `REVERSED`. The configured minimum payout defaults to KSh 100 for development. No live payout action is exposed.
 
-`PayoutProvider` and `CampaignFundingProvider` are application boundaries for future M-Pesa B2C, STK Push, bank, card, or account-credit adapters. Production code has no credentials, network calls, or fake successful provider.
+Participants can now create an idempotent, audited M-Pesa payout request from an eligible earnings wallet. The database locks the wallet, validates the configured minimum and available balance, and prevents overlapping requests. Creating a request does not move money: an approved provider worker must transition it through processing and completion.
+
+`PayoutProvider` and `CampaignFundingProvider` are application boundaries for M-Pesa B2C, STK Push, bank, card, or account-credit adapters. Provider credentials remain server-only and live transfer processing stays unavailable until the Safaricom application and callbacks are configured.
 
 ## Audit, idempotency, and events
 

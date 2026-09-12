@@ -17,6 +17,13 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: test-publishable-key
+          NEXT_PUBLIC_SITE_URL: http://127.0.0.1:3000
+          SAUTI_ENV: test
       - run: npm run build
         env:
           NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co

@@ -1,6 +1,6 @@
 # Test strategy
 
-The automated gate runs lint, TypeScript, unit tests and a production build. Database changes must be exercised against an ephemeral Supabase project, never production.
+The automated gate runs lint, TypeScript, unit tests, a production build, and Playwright smoke coverage on mobile and desktop Chromium. Database changes must be exercised against an ephemeral Supabase project, never production.
 
 Before a pilot, test unauthenticated redirects and the full role matrix: Listener ownership; Artist upload/campaign ownership; DJ accepted-campaign access; Matatu crew/playback; and Admin-only review, settings, finance and payout operations. Attempt cross-account reads and writes directly through Supabase to prove RLS denies them.
 

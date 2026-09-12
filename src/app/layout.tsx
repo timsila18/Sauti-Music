@@ -13,5 +13,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}><body>{children}<Toaster richColors position="top-center" /></body></html>;
+  return <html lang="en" data-scroll-behavior="smooth" className={`${geistSans.variable} ${geistMono.variable}`}><body>{children}<Toaster richColors position="top-center" /></body></html>;
 }
