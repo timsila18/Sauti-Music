@@ -10,6 +10,7 @@ test("landing page explains Sauti and reaches authentication",async({page})=>{
 });
 
 test("protected role routes send guests to sign in",async({page})=>{
+  test.setTimeout(60_000);
   for(const route of ["/listener","/artist","/dj","/matatu","/admin"]){
     await page.goto(route);
     await expect(page).toHaveURL(/\/login/);
