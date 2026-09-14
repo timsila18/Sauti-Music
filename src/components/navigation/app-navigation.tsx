@@ -109,6 +109,23 @@ export function AppNavigation({
                     </Link>
                   </Button>
                 ))}
+                <div className="my-2 h-px bg-border" />
+                <Button asChild variant="ghost" className="justify-start">
+                  <Link href="/account/security">
+                    <Settings />
+                    Password &amp; security
+                  </Link>
+                </Button>
+                <form action={logoutAction}>
+                  <Button
+                    type="submit"
+                    variant="ghost"
+                    className="w-full justify-start text-destructive hover:text-destructive"
+                  >
+                    <LogOut />
+                    Log out
+                  </Button>
+                </form>
               </div>
             </SheetContent>
           </Sheet>
@@ -236,7 +253,10 @@ function AccountMenu({
         </Link>
         <DropdownMenuSeparator />
         <form action={logoutAction}>
-          <button className="flex w-full items-center gap-2 rounded-sm px-2 py-2 text-sm text-destructive hover:bg-muted">
+          <button
+            type="submit"
+            className="flex w-full items-center gap-2 rounded-sm px-2 py-2 text-sm text-destructive hover:bg-muted"
+          >
             <LogOut className="size-4" />
             Log out
           </button>

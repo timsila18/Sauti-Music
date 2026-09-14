@@ -3,6 +3,7 @@ import { BrandMark } from "@/components/brand-mark";
 import { logoutAction } from "@/app/(auth)/actions";
 import { Button } from "@/components/ui/button";
 import { NotificationBell } from "@/components/notifications/notification-bell";
+import { LogOut, Settings } from "lucide-react";
 const items = [
   ["Overview", "/admin"],
   ["Campaigns", "/admin/campaigns"],
@@ -37,12 +38,25 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             </Link>
           ))}
         </nav>
-        <form action={logoutAction} className="mt-6 hidden lg:block">
-          <Link href="/account/security" className="mb-3 block rounded-xl px-3 py-2 text-sm text-muted-foreground hover:bg-lavender hover:text-plum">Password & security</Link>
-          <Button variant="outline" className="w-full">
-            Log out
+        <div className="mt-4 flex items-center gap-2 border-t pt-4 lg:mt-6 lg:block">
+          <Button asChild variant="ghost" className="min-w-fit flex-1 justify-start lg:mb-3 lg:w-full">
+            <Link href="/account/security">
+              <Settings className="size-4" />
+              <span className="hidden sm:inline">Password &amp; security</span>
+              <span className="sm:hidden">Security</span>
+            </Link>
           </Button>
-        </form>
+          <form action={logoutAction} className="flex-1">
+            <Button
+              type="submit"
+              variant="outline"
+              className="w-full text-destructive hover:text-destructive"
+            >
+              <LogOut className="size-4" />
+              Log out
+            </Button>
+          </form>
+        </div>
       </aside>
       <main className="min-w-0 p-5 sm:p-8 lg:p-10">{children}</main>
     </div>
