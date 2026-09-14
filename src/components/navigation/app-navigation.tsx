@@ -43,6 +43,7 @@ const listenerItems = [
 const artistItems = [
   { label: "Home", icon: Home, href: "/artist" },
   { label: "Music", icon: Compass, href: "/artist/music" },
+  { label: "Packages", icon: WalletCards, href: "/artist/packages" },
   { label: "Activity", icon: Bell, href: "/artist/activity" },
   { label: "Profile", icon: UserRound, href: "/artist/profile" },
 ];
