@@ -25,5 +25,6 @@ export async function requestPayoutAction(_:PayoutActionState,formData:FormData)
   if(error)return{status:"error",message:payoutMessage(error.message)};
   revalidatePath("/dj/wallet");
   revalidatePath("/matatu/wallet");
+  revalidatePath("/admin/treasury");
   return{status:"success",message:"Payout requested. We’ll update you when processing begins."};
 }

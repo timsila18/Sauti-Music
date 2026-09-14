@@ -228,11 +228,11 @@ function AccountMenu({
           Profile
         </Link>
         <Link
-          href={role === "listener" ? "/my-sauti#privacy" : "#"}
+          href="/account/security"
           className="flex items-center gap-2 px-2 py-2 text-sm text-muted-foreground"
         >
           <Settings className="size-4" />
-          Settings
+          Password & security
         </Link>
         <DropdownMenuSeparator />
         <form action={logoutAction}>

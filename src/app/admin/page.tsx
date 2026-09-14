@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { AdminHeader, Status } from "@/components/admin/admin-shell";
 import { adminClient } from "@/lib/services/admin-data";
+import { requireRole } from "@/lib/auth/session";
 const money = (n: number) => `KSh ${n.toLocaleString()}`;
 export default async function Page() {
+  const { profile } = await requireRole("ADMIN", "/admin");
   const db = await adminClient();
   const [
     { count: pendingCampaigns },
@@ -14,6 +16,7 @@ export default async function Page() {
     { data: djs },
     { data: matatus },
     { data: events },
+    { data: ownership },
   ] = await Promise.all([
     db
       .from("campaigns")
@@ -48,7 +51,9 @@ export default async function Page() {
       .select("id,event_type,created_at")
       .order("created_at", { ascending: false })
       .limit(6),
+    (db as any).from("admin_assignments").select("level,ownership_bps").eq("profile_id",profile.id).maybeSingle(),
   ]);
+  const ownershipPercent=Number(ownership?.ownership_bps??0)/100;
   const priorities = [
     ["Pending Campaigns", pendingCampaigns ?? 0, "/admin/campaigns"],
     ["Flagged Plays", flagged ?? 0, "/admin/reviews/plays"],
@@ -72,6 +77,7 @@ export default async function Page() {
         title="What needs attention?"
         description="A focused view of marketplace operations, reviews and financial risk."
       />
+      {ownershipPercent>0?<Link href="/admin/treasury" className="mt-7 block rounded-[2rem] bg-coral p-7 text-white transition-transform hover:-translate-y-0.5"><p className="text-sm text-white/70">Sauti Music ownership</p><h2 className="mt-2 text-3xl font-medium">You own {ownershipPercent}% of Sauti Music.</h2><p className="mt-2 max-w-2xl text-white/75">You are entitled to {ownershipPercent}% of approved net profits. View allocations and withdraw available proceeds from your management wallet.</p></Link>:null}
       <div className="mt-8 grid grid-cols-2 gap-3 xl:grid-cols-3">
         {priorities.map(([l, v, h]) => (
           <Link

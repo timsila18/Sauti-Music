@@ -13,6 +13,7 @@ const items = [
   ["Plays & Reviews", "/admin/reviews/plays"],
   ["Risk", "/admin/risk"],
   ["Finance", "/admin/finance"],
+  ["My Sauti Share", "/admin/treasury"],
   ["Payouts", "/admin/payouts"],
   ["Settings", "/admin/settings"],
   ["Audit", "/admin/audit"],
@@ -37,6 +38,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           ))}
         </nav>
         <form action={logoutAction} className="mt-6 hidden lg:block">
+          <Link href="/account/security" className="mb-3 block rounded-xl px-3 py-2 text-sm text-muted-foreground hover:bg-lavender hover:text-plum">Password & security</Link>
           <Button variant="outline" className="w-full">
             Log out
           </Button>
