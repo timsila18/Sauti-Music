@@ -10,5 +10,5 @@ export async function GET(){
   const production=process.env.SAUTI_ENV==="production";
   const ready=missing.length===0&&(!production||unsafeFlags.length===0);
   logger.info("readiness.checked",{route:"/api/ready",status:ready?"ok":"degraded",durationMs:Date.now()-started});
-  return Response.json({status:ready?"ready":"not_ready",environment:process.env.SAUTI_ENV??"development",checks:{configuration:missing.length===0,productionSafety:!production||unsafeFlags.length===0,paymentsConfigured:Boolean(process.env.MPESA_CONSUMER_KEY&&process.env.MPESA_CONSUMER_SECRET&&process.env.MPESA_SHORTCODE)}},{status:ready?200:503,headers:{"Cache-Control":"no-store"}});
+  return Response.json({status:ready?"ready":"not_ready",environment:process.env.SAUTI_ENV??"development",checks:{configuration:missing.length===0,productionSafety:!production||unsafeFlags.length===0,paymentsConfigured:Boolean(process.env.MPESA_CONSUMER_KEY&&process.env.MPESA_CONSUMER_SECRET&&process.env.MPESA_SHORTCODE&&process.env.MPESA_PASSKEY&&process.env.MPESA_CALLBACK_SECRET),payoutsConfigured:Boolean(process.env.MPESA_B2C_CONSUMER_KEY&&process.env.MPESA_B2C_CONSUMER_SECRET&&process.env.MPESA_B2C_SHORTCODE&&process.env.MPESA_B2C_INITIATOR_NAME&&process.env.MPESA_B2C_SECURITY_CREDENTIAL)}},{status:ready?200:503,headers:{"Cache-Control":"no-store"}});
 }

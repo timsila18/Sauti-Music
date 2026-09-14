@@ -530,6 +530,14 @@ export type Database = {
         Args: { p_amount: number; p_method: "MPESA_B2C" | "BANK" | "OTHER"; p_destination_reference: string; p_idempotency_key: string };
         Returns: string;
       };
+      register_mpesa_checkout: {
+        Args: { p_campaign_id: string; p_checkout_id: string; p_merchant_id: string; p_phone: string };
+        Returns: string;
+      };
+      complete_mpesa_checkout: {
+        Args: { p_checkout_id: string; p_result_code: number; p_result_description: string; p_receipt: string; p_amount: number; p_proof: string };
+        Returns: Json;
+      };
     };
     Enums: {
       user_role: UserRole;

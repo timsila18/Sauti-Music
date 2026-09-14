@@ -51,6 +51,8 @@ Funding, earnings, refunds, payouts, reversals, and adjustments use unique idemp
 - Payout destinations are owner/admin only, platform accounting is admin only, and configuration writes remain admin-only.
 - Amounts submitted to an admin action are revalidated and calculated inside the locked database transaction. Participant reward amounts always come from server-side configuration.
 
-## Future M-Pesa integration
+## M-Pesa integration
 
-An STK adapter will call the campaign funding service only after a verified, idempotent provider callback. A B2C adapter will consume an approved payout request and post completion or reversal exactly once. Provider signatures, callback storage, reconciliation, credential management, and live transfers are intentionally outside this prompt.
+Campaign funding uses production STK Push. An authenticated artist creates a checkout for the exact campaign budget; Sauti records Safaricom identifiers, independently queries Daraja when the callback arrives, verifies a server-only callback proof, and posts the funding and platform-fee ledger entries exactly once. Invalid proofs, amount mismatches, duplicate receipts and repeated callbacks cannot credit a campaign.
+
+B2C remains fail-closed until a Safaricom encrypted SecurityCredential is installed together with the B2C consumer credentials, shortcode and initiator. An initiator name or password must never be substituted for the encrypted credential.
