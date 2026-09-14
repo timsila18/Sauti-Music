@@ -3,6 +3,7 @@ import { BrandMark } from "@/components/brand-mark";
 import { logoutAction } from "@/app/(auth)/actions";
 import { Button } from "@/components/ui/button";
 import { NotificationBell } from "@/components/notifications/notification-bell";
+import { SessionWelcome } from "@/components/session-welcome";
 import { LogOut, Settings } from "lucide-react";
 const items = [
   ["Overview", "/admin"],
@@ -58,7 +59,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           </form>
         </div>
       </aside>
-      <main className="min-w-0 p-5 sm:p-8 lg:p-10">{children}</main>
+      <main className="min-w-0 p-5 sm:p-8 lg:p-10"><SessionWelcome />{children}</main>
     </div>
   );
 }
