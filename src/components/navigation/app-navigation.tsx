@@ -83,6 +83,18 @@ export function AppNavigation({
         <div className="flex items-center gap-1">
           <NotificationBell />
           <AccountMenu role={role} />
+          <form action={logoutAction}>
+            <Button
+              type="submit"
+              variant="ghost"
+              size="icon"
+              className="text-destructive hover:text-destructive"
+              aria-label="Log out"
+              title="Log out"
+            >
+              <LogOut />
+            </Button>
+          </form>
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" aria-label="Open menu">
@@ -156,6 +168,16 @@ export function AppNavigation({
         </nav>
         <div className="mt-auto">
           <AccountMenu role={role} expanded />
+          <form action={logoutAction} className="mt-2">
+            <Button
+              type="submit"
+              variant="outline"
+              className="w-full justify-start text-destructive hover:text-destructive"
+            >
+              <LogOut />
+              Log out
+            </Button>
+          </form>
           <p className="mb-4 mt-5 text-xs uppercase tracking-[.16em] text-muted-foreground">
             {role} preview
           </p>
