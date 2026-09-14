@@ -22,12 +22,12 @@ const items = [
 export function AdminShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-svh bg-background lg:grid lg:grid-cols-[250px_1fr]">
-      <aside className="border-b p-5 lg:sticky lg:top-0 lg:h-svh lg:border-b-0 lg:border-r lg:p-7">
-        <div className="flex items-center justify-between">
+      <aside className="border-b p-5 lg:sticky lg:top-0 lg:flex lg:h-svh lg:flex-col lg:overflow-hidden lg:border-b-0 lg:border-r lg:p-7">
+        <div className="shrink-0 flex items-center justify-between">
           <BrandMark />
           <div className="flex items-center gap-2"><NotificationBell /><span className="rounded-full bg-lavender px-3 py-1 text-xs text-plum">Admin</span></div>
         </div>
-        <nav className="mt-7 flex gap-2 overflow-x-auto pb-2 lg:grid">
+        <nav className="mt-7 flex gap-2 overflow-x-auto pb-2 lg:min-h-0 lg:flex-1 lg:grid lg:content-start lg:overflow-x-hidden lg:overflow-y-auto lg:pr-2">
           {items.map(([label, href]) => (
             <Link
               key={href}
@@ -38,7 +38,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             </Link>
           ))}
         </nav>
-        <div className="mt-4 flex items-center gap-2 border-t pt-4 lg:mt-6 lg:block">
+        <div className="mt-4 flex shrink-0 items-center gap-2 border-t bg-background pt-4 lg:block">
           <Button asChild variant="ghost" className="min-w-fit flex-1 justify-start lg:mb-3 lg:w-full">
             <Link href="/account/security">
               <Settings className="size-4" />
