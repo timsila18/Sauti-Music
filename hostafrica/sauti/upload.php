@@ -42,8 +42,10 @@ $cipher = openssl_encrypt($plain, 'aes-256-gcm', SAUTI_ENCRYPTION_KEY, OPENSSL_R
 if ($cipher === false) fail_request(500, 'Could not encrypt audio.');
 $target = SAUTI_PRIVATE_ROOT . '/' . $key . '.bin';
 if (!is_dir(dirname($target))) mkdir(dirname($target), 0700, true);
+if (is_file($target)) fail_request(409, 'This upload has already been stored.');
 $header = json_encode(['mime'=>$actual,'size'=>$file['size']]);
 $blob = 'SAUTI01' . pack('N', strlen($header)) . $header . $iv . $tag . $cipher;
 if (file_put_contents($target, $blob, LOCK_EX) === false) fail_request(500, 'Could not store audio.');
 chmod($target, 0600);
-header('Content-Type: application/json'); echo json_encode(['key' => $key]);
+$receipt = rtrim(strtr(base64_encode(hash_hmac('sha256', 'stored:' . $key, SAUTI_STORAGE_SECRET, true)), '+/', '-_'), '=');
+header('Content-Type: application/json'); echo json_encode(['key' => $key, 'receipt' => $receipt]);

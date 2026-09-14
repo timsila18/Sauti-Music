@@ -52,3 +52,7 @@ export function safeTokenEqual(left: string, right: string) {
   const b = Buffer.from(right);
   return a.length === b.length && timingSafeEqual(a, b);
 }
+
+export function storageReceipt(key: string) {
+  return createHmac("sha256", config().secret).update(`stored:${key}`).digest("base64url");
+}
