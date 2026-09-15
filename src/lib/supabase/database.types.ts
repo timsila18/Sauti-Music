@@ -538,6 +538,10 @@ export type Database = {
         Args: { p_checkout_id: string; p_result_code: number; p_result_description: string; p_receipt: string; p_amount: number; p_proof: string };
         Returns: Json;
       };
+      register_mpesa_payout: { Args: { p_payout_id: string; p_originator_id: string; p_conversation_id: string }; Returns: undefined };
+      record_mpesa_payout_dispatch: { Args: { p_payout_id: string; p_conversation_id: string }; Returns: undefined };
+      fail_mpesa_payout_dispatch: { Args: { p_payout_id: string; p_reason: string }; Returns: undefined };
+      complete_mpesa_payout: { Args: { p_originator_id: string; p_result_code: number; p_result_description: string; p_receipt: string; p_conversation_id: string; p_proof: string }; Returns: Json };
     };
     Enums: {
       user_role: UserRole;

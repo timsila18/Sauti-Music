@@ -1,7 +1,9 @@
-import { updatePayout } from "@/app/admin/actions";
+import { sendPayout } from "@/app/admin/actions";
 import { AdminHeader, Status } from "@/components/admin/admin-shell";
 import { adminClient } from "@/lib/services/admin-data";
+import { b2cConfigured } from "@/lib/payments/mpesa-b2c";
 export default async function Page() {
+  const livePayouts = b2cConfigured();
   const db = await adminClient();
   const [{ data: rows }, { data: wallets }, { data: profiles }] =
     await Promise.all([
@@ -19,8 +21,9 @@ export default async function Page() {
       <AdminHeader
         eyebrow="Finance Operations"
         title="Payout review"
-        description="Development workflow only. No M-Pesa request is made."
+        description="Review requested withdrawals and dispatch approved payments through M-Pesa B2C."
       />
+      {!livePayouts ? <p className="mt-5 rounded-2xl bg-lavender p-4 text-sm text-plum">M-Pesa payout dispatch is safely disabled until the exact B2C consumer key and secret are installed.</p> : null}
       <div className="mt-7 grid gap-3">
         {(rows ?? []).map((p) => {
           const w = wallets?.find((x) => x.wallet_id === p.wallet_id),
@@ -42,33 +45,7 @@ export default async function Page() {
                 </div>
                 <Status>{p.status}</Status>
               </div>
-              {["REQUESTED", "PROCESSING"].includes(p.status) ? (
-                <form
-                  action={updatePayout}
-                  className="mt-4 flex flex-wrap gap-2"
-                >
-                  <input type="hidden" name="payoutId" value={p.id} />
-                  <select name="status" className="rounded-xl border px-3">
-                    <option>PROCESSING</option>
-                    <option>COMPLETED</option>
-                    <option>FAILED</option>
-                    <option>CANCELLED</option>
-                  </select>
-                  <input
-                    required
-                    name="reason"
-                    placeholder="Reason / processing note"
-                    className="h-10 flex-1 rounded-xl border px-3"
-                  />
-                  <label className="self-center text-xs">
-                    <input required type="checkbox" /> Confirm development
-                    status change
-                  </label>
-                  <button className="rounded-xl bg-plum px-4 text-white">
-                    Update
-                  </button>
-                </form>
-              ) : null}
+              {livePayouts && p.status === "REQUESTED" && p.method === "MPESA_B2C" ? <form action={sendPayout} className="mt-4"><input type="hidden" name="payoutId" value={p.id}/><label className="mr-3 text-xs"><input required type="checkbox"/> I verified the recipient and amount</label><button className="rounded-xl bg-coral px-4 py-2 text-white">Send via M-Pesa</button></form> : null}
             </article>
           );
         })}

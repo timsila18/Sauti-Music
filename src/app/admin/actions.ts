@@ -4,6 +4,7 @@ import { requireRole } from "@/lib/auth/session";
 import { createClient } from "@/lib/supabase/server";
 import { requireFeature } from "@/lib/config/features";
 import { cleanText, positiveAmount, uuid } from "@/lib/validation/core";
+import { sendB2c } from "@/lib/payments/mpesa-b2c";
 const text = (v: FormDataEntryValue | null) => String(v ?? "").trim();
 export async function simulateFunding(form: FormData) {
   requireFeature("financeSimulation");
@@ -127,6 +128,16 @@ export async function updatePayout(form: FormData) {
       | "CANCELLED",
     p_reason: text(form.get("reason")),
   });
+}
+export async function sendPayout(form: FormData) {
+  await requireRole("ADMIN", "/admin"); const db = await createClient(); const payoutId = uuid(form.get("payoutId"));
+  const { data: payout } = await db.from("payout_requests").select("id,amount,destination_reference,status,method").eq("id", payoutId).single();
+  if (!payout || payout.status !== "REQUESTED" || payout.method !== "MPESA_B2C") throw new Error("Payout is not ready for dispatch.");
+  const { error: beginError } = await db.rpc("register_mpesa_payout", { p_payout_id: payout.id, p_originator_id: payout.id, p_conversation_id: "" });
+  if (beginError) throw new Error(beginError.message);
+  try { const sent = await sendB2c({ payoutId: payout.id, amount: Number(payout.amount), phone: payout.destination_reference }); await db.rpc("record_mpesa_payout_dispatch", { p_payout_id: payout.id, p_conversation_id: sent.conversationId }); }
+  catch (cause) { await db.rpc("fail_mpesa_payout_dispatch", { p_payout_id: payout.id, p_reason: cause instanceof Error ? cause.message : "Provider dispatch failed" }); throw cause; }
+  revalidatePath("/admin/payouts");
 }
 export async function updateSetting(form: FormData) {
   const key = text(form.get("key"));
