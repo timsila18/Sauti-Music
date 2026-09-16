@@ -22,8 +22,8 @@ const items = [
 ];
 export function AdminShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-svh bg-background lg:grid lg:grid-cols-[250px_1fr]">
-      <aside className="border-b p-5 lg:sticky lg:top-0 lg:flex lg:h-svh lg:flex-col lg:overflow-hidden lg:border-b-0 lg:border-r lg:p-7">
+    <div className="min-h-svh bg-background lg:grid lg:grid-cols-[232px_1fr]">
+      <aside className="border-b bg-card p-5 lg:sticky lg:top-0 lg:flex lg:h-svh lg:flex-col lg:overflow-hidden lg:border-b-0 lg:border-r lg:p-6">
         <div className="shrink-0 flex items-center justify-between">
           <BrandMark />
           <div className="flex items-center gap-2"><NotificationBell /><span className="rounded-full bg-lavender px-3 py-1 text-xs text-plum">Admin</span></div>
@@ -33,7 +33,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             <Link
               key={href}
               href={href}
-              className="whitespace-nowrap rounded-xl px-3 py-2 text-sm text-muted-foreground hover:bg-lavender hover:text-plum"
+            className="whitespace-nowrap rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-primary"
             >
               {label}
             </Link>
@@ -59,7 +59,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           </form>
         </div>
       </aside>
-      <main className="min-w-0 p-5 sm:p-8 lg:p-10"><SessionWelcome />{children}</main>
+      <main className="min-w-0 p-4 sm:p-8 lg:p-10 xl:p-12"><div className="mx-auto max-w-[1180px]"><SessionWelcome />{children}</div></main>
     </div>
   );
 }
@@ -75,7 +75,7 @@ export function AdminHeader({
   return (
     <header>
       <p className="text-sm font-medium text-coral">{eyebrow}</p>
-      <h1 className="mt-2 text-4xl font-medium tracking-[-.04em] text-plum">
+      <h1 className="mt-2 text-4xl font-semibold tracking-[-.045em] text-ink">
         {title}
       </h1>
       {description ? (

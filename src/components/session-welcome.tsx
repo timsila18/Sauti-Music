@@ -35,6 +35,8 @@ export function SessionWelcome() {
 
       let roleLabel: string = roleLabels[profile.role as UserRole];
       if (profile.role === "ADMIN") {
+        // Admin assignments are migration-backed and not yet present in generated client types.
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const { data: assignment } = await (db as any)
           .from("admin_assignments")
           .select("level")
@@ -61,11 +63,11 @@ export function SessionWelcome() {
 
   return (
     <div
-      className="mb-6 rounded-2xl border border-plum/10 bg-lavender/55 px-4 py-3 text-sm text-plum sm:px-5"
+      className="mb-6 flex items-center gap-3 rounded-2xl border border-primary/10 bg-secondary/70 px-4 py-3 text-sm text-ink sm:px-5"
       role="status"
     >
-      Welcome <strong>{details.firstName}</strong>, you are logged in as{" "}
-      <strong>{details.roleLabel}</strong>.
+      <span className="size-2 shrink-0 rounded-full bg-success" />
+      <span>Welcome <strong>{details.firstName}</strong>, you are logged in as <strong>{details.roleLabel}</strong>.</span>
     </div>
   );
 }

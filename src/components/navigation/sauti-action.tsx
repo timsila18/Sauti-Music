@@ -24,7 +24,7 @@ export function SautiAction({
           "pressable group flex items-center justify-center bg-primary text-white focus-visible:ring-2 focus-visible:ring-ring",
           compact
             ? "w-full gap-2 rounded-xl px-4 py-3 text-sm font-medium"
-            : "mx-auto -mt-3 size-12 rounded-2xl",
+            : "mx-auto -mt-4 size-14 rounded-full border-4 border-card shadow-lg shadow-primary/25",
         )}
       >
         <AudioLines className="size-5" />
@@ -40,7 +40,7 @@ export function SautiAction({
           "pressable flex items-center justify-center bg-primary text-white",
           compact
             ? "w-full gap-2 rounded-xl px-4 py-3 text-sm font-medium"
-            : "mx-auto -mt-3 size-12 rounded-2xl",
+            : "mx-auto -mt-4 size-14 rounded-full border-4 border-card shadow-lg shadow-primary/25",
         )}
       >
         <AudioLines className="size-5" />
@@ -60,7 +60,7 @@ export function SautiAction({
           "pressable flex items-center justify-center bg-primary text-white",
           compact
             ? "w-full gap-2 rounded-xl px-4 py-3 text-sm font-medium"
-            : "mx-auto -mt-3 size-12 rounded-2xl",
+            : "mx-auto -mt-4 size-14 rounded-full border-4 border-card shadow-lg shadow-primary/25",
         )}
       >
         <AudioLines className="size-5" />

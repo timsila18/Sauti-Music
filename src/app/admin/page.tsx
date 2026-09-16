@@ -51,6 +51,8 @@ export default async function Page() {
       .select("id,event_type,created_at")
       .order("created_at", { ascending: false })
       .limit(6),
+    // Admin ownership is introduced by a production migration not yet present in generated client types.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (db as any).from("admin_assignments").select("level,ownership_bps").eq("profile_id",profile.id).maybeSingle(),
   ]);
   const ownershipPercent=Number(ownership?.ownership_bps??0)/100;
@@ -83,15 +85,15 @@ export default async function Page() {
           <Link
             href={String(h)}
             key={String(l)}
-            className="rounded-2xl bg-card p-5 hover:ring-2 hover:ring-coral/20"
+            className="app-panel surface-hover p-5"
           >
             <p className="text-sm text-muted-foreground">{l}</p>
-            <p className="mt-2 text-3xl font-medium text-plum">{v}</p>
+            <p className="mt-2 text-3xl font-semibold tracking-[-.04em] text-ink">{v}</p>
           </Link>
         ))}
       </div>
       <div className="mt-9 grid gap-5 lg:grid-cols-2">
-        <section className="rounded-3xl bg-plum p-6 text-white">
+        <section className="rounded-[1.5rem] bg-ink p-6 text-white shadow-xl shadow-black/10">
           <h2 className="text-2xl">System Alerts</h2>
           <div className="mt-5 grid gap-3">
             {(events ?? []).map((e) => (
@@ -107,7 +109,7 @@ export default async function Page() {
             ) : null}
           </div>
         </section>
-        <section className="rounded-3xl bg-card p-6">
+        <section className="app-panel p-6">
           <h2 className="text-2xl text-plum">New DJs / Matatus</h2>
           <div className="mt-5 grid gap-3">
             {[

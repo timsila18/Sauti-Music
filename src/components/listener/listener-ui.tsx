@@ -388,28 +388,31 @@ export function ListenerHome({
   const [view, setView] = useState<keyof typeof chartViews>("Near Me");
   return (
     <>
-      <div>
-        <p className="text-sm text-muted-foreground">
+      <div className="flex items-end justify-between gap-4">
+        <div>
+        <p className="text-sm font-medium text-muted-foreground">
           Good afternoon, {name.split(" ")[0]}
         </p>
-        <h1 className="mt-1 text-3xl font-medium tracking-[-.04em] text-ink">Hear what&apos;s around you.</h1>
+        <h1 className="mt-1 text-3xl font-semibold tracking-[-.045em] text-ink">What&apos;s playing?</h1>
+        </div>
+        <span className="hidden rounded-full bg-secondary px-3 py-1.5 text-xs font-medium text-primary sm:block">{area}</span>
       </div>
-      <section className="relative mt-8 overflow-hidden rounded-[1.25rem] bg-card p-6 sm:p-8">
-        <div className="relative z-10 max-w-lg">
-          <Volume2 className="size-6 text-primary" />
-          <h2 className="mt-5 text-3xl font-medium tracking-[-.04em]">
-            What&apos;s Playing?
-          </h2>
-          <p className="mt-2 text-muted-foreground">Tap Sauti to find out.</p>
-          <div className="mt-7 w-fit">
+      <section className="app-panel relative mt-6 overflow-hidden p-6 text-center sm:p-8">
+        <div className="absolute inset-x-0 top-0 h-1 bg-primary" />
+        <div className="relative z-10 mx-auto max-w-lg">
+          <div className="mx-auto flex w-fit items-end gap-1 text-primary" aria-hidden="true">{[18,32,46,28,52,38,22,42,30].map((height,index)=><span key={index} className="w-1 rounded-full bg-current" style={{height}} />)}</div>
+          <h2 className="mt-5 text-2xl font-semibold tracking-[-.035em]">Tap Sauti to find out</h2>
+          <p className="mt-2 text-sm text-muted-foreground">Identify music playing around you.</p>
+          <div className="mx-auto mt-6 w-fit">
             <ListeningSheet compact />
           </div>
         </div>
+        <span className="absolute -bottom-20 -right-16 size-52 rounded-full border-[32px] border-secondary" />
       </section>
       <section className="mt-12">
         <h2 className="text-2xl font-medium text-plum">Recently heard</h2>
         {history.length ? (
-          <div className="mt-4 divide-y rounded-3xl bg-card px-4">
+          <div className="app-panel mt-4 divide-y px-4">
             {history.map((item) => {
               const song =
                 discoverySongs.find((x) => x.id === item.songId) ??
@@ -465,7 +468,7 @@ export function ListenerHome({
             ))}
           </TabsList>
         </Tabs>
-        <ol className="mt-4 overflow-hidden rounded-3xl bg-card">
+        <ol className="app-panel mt-4">
           {chartViews[view].map((song, index) => (
             <li
               key={song.id}

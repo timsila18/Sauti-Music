@@ -80,7 +80,7 @@ export function AppNavigation({
   const navigable = role !== "admin";
   return (
     <>
-      <header className="sticky top-0 z-40 flex h-16 items-center justify-between bg-background/95 px-5 backdrop-blur lg:hidden">
+      <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-black/[.035] bg-background/90 px-4 backdrop-blur-xl lg:hidden">
         <BrandMark />
         <div className="flex items-center gap-1">
           <NotificationBell />
@@ -145,12 +145,12 @@ export function AppNavigation({
           </Sheet>
         </div>
       </header>
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r bg-background p-7 lg:flex">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-[232px] flex-col border-r border-black/[.045] bg-card p-6 lg:flex">
         <div className="flex items-center justify-between">
           <BrandMark />
           <NotificationBell />
         </div>
-        <nav className="mt-12 grid gap-2">
+        <nav className="mt-10 grid gap-1">
           {items.map(({ label, icon: Icon, href }, index) => {
             const target = navigable ? href : index === 0 ? pathname : "#";
             return (
@@ -158,8 +158,8 @@ export function AppNavigation({
                 key={label}
                 href={target}
                 className={cn(
-                  "flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
-                  pathname === target && "bg-lavender text-plum",
+                  "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-all hover:bg-muted hover:text-foreground",
+                  pathname === target && "bg-secondary text-primary shadow-[inset_3px_0_0_var(--primary)]",
                 )}
               >
                 <Icon className="size-5" />
@@ -188,7 +188,7 @@ export function AppNavigation({
       </aside>
       <nav
         aria-label="Primary navigation"
-        className="fixed inset-x-0 bottom-0 z-50 grid grid-cols-5 items-end border-t bg-card/95 px-2 pb-[max(.5rem,env(safe-area-inset-bottom))] pt-2 shadow-[0_-8px_24px_rgba(23,23,28,.05)] backdrop-blur lg:hidden"
+        className="fixed inset-x-0 bottom-0 z-50 grid grid-cols-5 items-end border-t border-black/[.04] bg-card/92 px-2 pb-[max(.5rem,env(safe-area-inset-bottom))] pt-2 shadow-[0_-12px_35px_rgba(23,23,28,.07)] backdrop-blur-xl lg:hidden"
       >
         {items.slice(0, 2).map(({ label, icon: Icon, href }) => {
           const target = navigable ? href : pathname;

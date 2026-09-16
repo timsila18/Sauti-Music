@@ -50,23 +50,25 @@ export function Home({
             <BusFront />
           </div>
           <div>
-            <h1 className="text-3xl font-medium">{matatu.display_name}</h1>
+            <p className="text-xs font-medium uppercase tracking-[.14em] text-muted-foreground">Matatu home</p>
+            <h1 className="mt-1 text-3xl font-semibold tracking-[-.04em]">{matatu.display_name}</h1>
             <p className="text-sm text-muted-foreground">{matatu.main_route}</p>
           </div>
         </div>
       </header>
-      <section className="mt-10">
-        <p className="text-sm text-muted-foreground">Today</p>
-        <p className="mt-2 text-5xl font-medium">KSh 70</p>
-        <p className="mt-2 text-muted-foreground">
+      <section className="app-panel relative mt-8 overflow-hidden p-6 sm:p-8">
+        <p className="eyebrow">Today</p>
+        <p className="mt-2 text-5xl font-semibold tracking-[-.055em]">KSh 70</p>
+        <p className="mt-2 text-sm text-success">
           {qualified} qualified {qualified === 1 ? "play" : "plays"}
         </p>
-        <Button asChild size="lg" className="mt-7">
+        <Button asChild size="lg" className="mt-7 w-full rounded-xl sm:w-auto">
           <Link href="/matatu/campaigns">
             <Play />
             Play & Earn
           </Link>
         </Button>
+        <svg className="absolute bottom-7 right-7 hidden h-20 w-44 text-success sm:block" viewBox="0 0 180 80" fill="none" aria-hidden="true"><path d="M3 66 34 47 61 57 91 31 117 43 150 9 177 21" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/><path d="M3 72h174" stroke="currentColor" strokeOpacity=".12"/></svg>
       </section>
       <CampaignCards campaigns={campaigns.slice(0, 3)} />
     </MatatuShell>
@@ -82,7 +84,7 @@ export function CampaignCards({ campaigns }: { campaigns: CampaignRow[] }) {
             <Link
               key={c.id}
               href={`/matatu/campaigns/${c.id}`}
-              className="surface-hover rounded-3xl bg-card p-6"
+              className="app-panel surface-hover p-6"
             >
               <span className="rounded-full bg-lime px-3 py-1 text-xs text-plum">
                 Active

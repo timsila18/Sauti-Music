@@ -41,34 +41,34 @@ export function Home({
 }) {
   return (
     <DjShell>
-      <header>
-        <p className="text-sm text-muted-foreground">
+      <header className="flex flex-wrap items-end justify-between gap-5">
+        <div><p className="text-sm font-medium text-muted-foreground">
           Good evening, {dj.stage_name}
         </p>
-        <h1 className="mt-2 text-4xl font-medium tracking-[-.04em]">
+        <h1 className="mt-2 text-4xl font-semibold tracking-[-.045em]">
           Ready for your next set?
-        </h1>
-        <Button asChild size="lg" className="mt-6">
+        </h1></div>
+        <Button asChild size="lg" className="rounded-full px-6 shadow-lg shadow-primary/20">
           <Link href="/dj/sets/new">
             <Radio />
             Start Set
           </Link>
         </Button>
       </header>
-      <Campaigns campaigns={campaigns} />
-      <section className="mt-12">
-        <h2 className="text-2xl font-medium">This week</h2>
-        <div className="mt-5 flex gap-10">
+      <section className="app-panel relative mt-8 overflow-hidden bg-ink p-6 text-white sm:p-8">
+        <div className="relative z-10 grid gap-7 sm:grid-cols-[1fr_auto] sm:items-end"><div><p className="eyebrow text-lime">This week</p><p className="mt-3 text-4xl font-semibold tracking-[-.05em]">KSh 105</p><p className="mt-1 text-sm text-white/50">Campaign earnings</p></div><div className="wave-bars text-primary" aria-hidden="true">{Array.from({length:18},(_,i)=><span key={i} style={{height:`${24+(i*17)%68}%`}} />)}</div></div>
+        <div className="relative z-10 mt-6 flex gap-10 border-t border-white/10 pt-5">
           <div>
-            <p className="text-3xl font-medium">KSh 105</p>
+            <p className="text-2xl font-semibold">KSh 105</p>
             <p className="mt-1 text-sm text-muted-foreground">Earned</p>
           </div>
           <div>
-            <p className="text-3xl font-medium">{sets.length}</p>
+            <p className="text-2xl font-semibold">{sets.length}</p>
             <p className="mt-1 text-sm text-muted-foreground">Sets</p>
           </div>
         </div>
       </section>
+      <Campaigns campaigns={campaigns} />
     </DjShell>
   );
 }
@@ -222,7 +222,7 @@ export function SetView({
   const [, start] = useTransition();
   return (
     <DjShell>
-      <section className="overflow-hidden rounded-[2rem] bg-plum p-6 text-white sm:p-9">
+      <section className="relative overflow-hidden rounded-[1.75rem] bg-[#101017] p-6 text-white shadow-2xl shadow-black/15 sm:p-9">
         <div className="flex items-center gap-2 text-sm font-medium text-lime">
           <span
             className={`size-2 rounded-full ${set.status === "ACTIVE" ? "animate-pulse bg-lime" : "bg-white/40"}`}
@@ -238,13 +238,14 @@ export function SetView({
         {set.status === "ACTIVE" ? (
           <ActiveElapsed startedAt={set.started_at} />
         ) : null}
+        <div className="wave-bars mt-7 text-primary" aria-hidden="true">{Array.from({length:34},(_,i)=><span key={i} style={{height:`${20+(i*23)%76}%`}} />)}</div>
         <div className="mt-8 border-t border-white/10 pt-7">
           <h2 className="text-xl">Campaign tracks</h2>
           <div className="mt-4 grid gap-3">
             {campaigns.map((c) => (
               <div
                 key={c.id}
-                className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-white/8 p-4"
+                className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/5 bg-white/8 p-4 transition hover:bg-white/12"
               >
                 <span className="font-medium">{c.campaign_name}</span>
                 <Button
